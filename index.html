@@ -1,11 +1,131 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<title>Hello World</title>
+    <meta charset="UTF-8">
+    <title>温馨提示弹窗</title>
+    <style>
+        /* 弹窗样式 */
+        .tip-window {
+            position: absolute;
+            width: 250px;
+            height: 60px;
+            border: none;
+            border-radius: 8px;
+            padding: 10px;
+            box-sizing: border-box;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: '微软雅黑', sans-serif;
+            font-size: 16px;
+            z-index: 9999; /* 确保弹窗置顶 */
+            cursor: move; /* 鼠标悬浮显示可拖动 */
+        }
+    </style>
 </head>
 <body>
-<h1>Hello World</h1>
-<p>欢迎使用HTML！</p>
+    <script>
+        // 弹窗计数器和配置
+        let windowCount = 0;
+        const MAX_WINDOWS = 300;
+        const interval = 300; // 弹窗间隔（毫秒）
+
+        // 温馨提示文字数组
+        const tips = [
+            '多喝水哦~', '保持微笑呀', '每天都要元气满满',
+            '记得吃饭', '保持好心情', '好好爱自己', '雲雲我想你了','雲雲我想你了','雲雲我想你了','雲雲我想你了','雲雲我想你了','雲雲我想你了',
+            '梦想成真', '期待周末见面', '金榜题名',
+            '顺顺利利', '早点休息', '愿所有烦恼都消失',
+            '别熬夜', '今天也要开开心心啊', '天冷了,多穿衣服'
+        ];
+
+        // 背景颜色数组
+        const bgColors = [
+            'lightpink', 'skyblue', 'lightgreen', 'lavender',
+            'lightyellow', 'plum', 'coral', 'bisque', 'aquamarine',
+            'mistyrose', 'honeydew', 'lavenderblush', 'oldlace'
+        ];
+
+        // 创建单个弹窗
+        function createWarmTip() {
+            if (windowCount >= MAX_WINDOWS) return;
+
+            // 创建弹窗元素
+            const tipWindow = document.createElement('div');
+            tipWindow.className = 'tip-window';
+
+            // 随机选择提示文字和背景色
+            const randomTip = tips[Math.floor(Math.random() * tips.length)];
+            const randomBg = bgColors[Math.floor(Math.random() * bgColors.length)];
+            tipWindow.textContent = randomTip;
+            tipWindow.style.backgroundColor = randomBg;
+
+            // 随机位置（确保弹窗完全显示在屏幕内）
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
+            const windowWidth = 250;
+            const windowHeight = 60;
+            const x = Math.floor(Math.random() * (screenWidth - windowWidth));
+            const y = Math.floor(Math.random() * (screenHeight - windowHeight));
+            tipWindow.style.left = `${x}px`;
+            tipWindow.style.top = `${y}px`;
+
+            // 添加到页面
+            document.body.appendChild(tipWindow);
+            windowCount++;
+
+            // 实现弹窗拖动功能
+            makeDraggable(tipWindow);
+
+            // 达到最大数量时提示
+            if (windowCount === MAX_WINDOWS) {
+                console.log(`已达到最大弹窗数量（${MAX_WINDOWS}个），自动暂停`);
+            }
+        }
+
+        // 弹窗拖动功能
+        function makeDraggable(element) {
+            let isDragging = false;
+            let offsetX, offsetY;
+
+            // 鼠标按下时记录初始位置
+            element.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                offsetX = e.clientX - element.getBoundingClientRect().left;
+                offsetY = e.clientY - element.getBoundingClientRect().top;
+                element.style.zIndex = 10000; // 拖动时置顶
+            });
+
+            // 鼠标移动时更新弹窗位置
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const x = e.clientX - offsetX;
+                const y = e.clientY - offsetY;
+                // 限制弹窗不超出屏幕边界
+                const maxX = window.innerWidth - element.offsetWidth;
+                const maxY = window.innerHeight - element.offsetHeight;
+                element.style.left = `${Math.max(0, Math.min(x, maxX))}px`;
+                element.style.top = `${Math.max(0, Math.min(y, maxY))}px`;
+            });
+
+            // 鼠标松开时停止拖动
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+                element.style.zIndex = 9999;
+            });
+        }
+
+        // 定时循环创建弹窗
+        function autoPopTips() {
+            createWarmTip();
+            if (windowCount < MAX_WINDOWS) {
+                setTimeout(autoPopTips, interval);
+            }
+        }
+
+        // 启动弹窗（页面加载完成后执行）
+        window.addEventListener('load', autoPopTips);
+    </script>
 </body>
 </html>
