@@ -2,23 +2,24 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>爱你老婆</title>
+    <title>温馨提示弹窗</title>
     <style>
-        /* 弹窗样式 */
+        /* 弹窗样式（修改为500x260） */
         .tip-window {
             position: absolute;
-            width: 250px;
-            height: 60px;
+            width: 500px; /* 宽度改为500px */
+            height: 260px; /* 高度改为260px */
             border: none;
-            border-radius: 8px;
-            padding: 10px;
+            border-radius: 12px; /* 适当加大圆角，适配大窗口 */
+            padding: 20px;
             box-sizing: border-box;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2); /* 增强阴影，提升质感 */
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: '微软雅黑', sans-serif;
-            font-size: 16px;
+            font-size: 24px; /* 加大字体，适配大窗口 */
+            text-align: center;
             z-index: 9999; /* 确保弹窗置顶 */
             cursor: move; /* 鼠标悬浮显示可拖动 */
         }
@@ -61,11 +62,11 @@
             tipWindow.textContent = randomTip;
             tipWindow.style.backgroundColor = randomBg;
 
-            // 随机位置（确保弹窗完全显示在屏幕内）
+            // 随机位置（适配新窗口尺寸，确保完全显示）
             const screenWidth = window.innerWidth;
             const screenHeight = window.innerHeight;
-            const windowWidth = 250;
-            const windowHeight = 60;
+            const windowWidth = 500; // 与样式一致
+            const windowHeight = 260; // 与样式一致
             const x = Math.floor(Math.random() * (screenWidth - windowWidth));
             const y = Math.floor(Math.random() * (screenHeight - windowHeight));
             tipWindow.style.left = `${x}px`;
@@ -129,4 +130,3 @@
     </script>
 </body>
 </html>
-
