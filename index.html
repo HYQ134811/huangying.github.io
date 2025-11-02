@@ -1,126 +1,43 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>爱你老婆</title>
+    <title>[捕鱼达人-FishJoy]BY-Sherry</title>
     <style>
-        .tip-window {
-            position: absolute;
-            width: 500px;
-            height: 260px;
-            border: none;
-            border-radius: 12px;
-            padding: 20px;
-            box-sizing: border-box;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: '微软雅黑', sans-serif;
-            font-size: 64px; /* 字体放大至48px */
-            font-weight: bold; /* 加粗字体增强视觉效果 */
-            text-align: center;
-            line-height: 1.2; /* 优化行高，避免换行溢出 */
-            overflow: hidden; /* 防止文字超出弹窗 */
-            z-index: 9999;
-            cursor: move;
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        body{
+            background:#000;
+            text-align:center;
+            overflow:hidden;
+        }
+        #mycanvas{
+            margin:30px auto;
         }
     </style>
+    <script type="text/javascript" src="js/underscore-min.js"></script>
+    <script type="text/javascript" src="js/SimpleJavaScriptInheritance.js"></script>
+    <script type="text/javascript" src="js/game.js"></script>
+    <script type="text/javascript" src="js/Actor.js"></script>
+    <script type="text/javascript" src="js/Background.js"></script>
+    <script type="text/javascript" src="js/Sence.js"></script>
+    <script type="text/javascript" src="js/Fish.js"></script>
+    <script type="text/javascript" src="js/CannonBottom.js"></script>
+    <script type="text/javascript" src="js/Cannon.js"></script>
+    <script type="text/javascript" src="js/Bullet.js"></script>
+    <script type="text/javascript" src="js/Web.js"></script>
+    <script type="text/javascript" src="js/DieFish.js"></script>
+    <script type="text/javascript" src="js/Coin.js"></script>
+    <script type="text/javascript" src="js/Score.js"></script>
+    <script type="text/javascript" src="js/CoinText.js"></script>
+
 </head>
 <body>
-    <script>
-        // 弹窗计数器和配置
-        let windowCount = 0;
-        const MAX_WINDOWS = 300;
-        const interval = 300; // 弹窗间隔（毫秒）
-
-        // 温馨提示文字数组（优先保留短文字，避免超长）
-        const tips = [
-            '多喝水哦~', '保持微笑呀！', '每天都要元气满满',
-        '记得吃饭', '保持好心情', '好好爱自己', '雲雲我想你了！','雲雲我想你了！','雲雲我想你了！','雲雲我想你了！','雲雲我想你了！','雲雲我想你了！',
-        '梦想成真', '期待周末见面', '金榜题名',
-        '顺顺利利', '早点休息', '愿所有烦恼都消失',
-        '别熬夜', '今天也要开开心心啊！', '天冷了,多穿衣服'
-        ];
-
-        // 背景颜色数组
-        const bgColors = [
-            'lightpink', 'skyblue', 'lightgreen', 'lavender',
-            'lightyellow', 'plum', 'coral', 'bisque', 'aquamarine',
-            'mistyrose', 'honeydew', 'lavenderblush', 'oldlace'
-        ];
-
-        // 创建单个弹窗
-        function createWarmTip() {
-            if (windowCount >= MAX_WINDOWS) return;
-
-            const tipWindow = document.createElement('div');
-            tipWindow.className = 'tip-window';
-
-            // 随机选择提示文字和背景色
-            const randomTip = tips[Math.floor(Math.random() * tips.length)];
-            const randomBg = bgColors[Math.floor(Math.random() * bgColors.length)];
-            tipWindow.textContent = randomTip;
-            tipWindow.style.backgroundColor = randomBg;
-
-            // 随机位置
-            const screenWidth = window.innerWidth;
-            const screenHeight = window.innerHeight;
-            const windowWidth = 500;
-            const windowHeight = 260;
-            const x = Math.floor(Math.random() * (screenWidth - windowWidth));
-            const y = Math.floor(Math.random() * (screenHeight - windowHeight));
-            tipWindow.style.left = `${x}px`;
-            tipWindow.style.top = `${y}px`;
-
-            document.body.appendChild(tipWindow);
-            windowCount++;
-
-            // 拖动功能
-            makeDraggable(tipWindow);
-
-            if (windowCount === MAX_WINDOWS) {
-                console.log(`已达到最大弹窗数量（${MAX_WINDOWS}个）`);
-            }
-        }
-
-        // 弹窗拖动功能
-        function makeDraggable(element) {
-            let isDragging = false;
-            let offsetX, offsetY;
-
-            element.addEventListener('mousedown', (e) => {
-                isDragging = true;
-                offsetX = e.clientX - element.getBoundingClientRect().left;
-                offsetY = e.clientY - element.getBoundingClientRect().top;
-                element.style.zIndex = 10000;
-            });
-
-            document.addEventListener('mousemove', (e) => {
-                if (!isDragging) return;
-                const x = e.clientX - offsetX;
-                const y = e.clientY - offsetY;
-                const maxX = window.innerWidth - element.offsetWidth;
-                const maxY = window.innerHeight - element.offsetHeight;
-                element.style.left = `${Math.max(0, Math.min(x, maxX))}px`;
-                element.style.top = `${Math.max(0, Math.min(y, maxY))}px`;
-            });
-
-            document.addEventListener('mouseup', () => {
-                isDragging = false;
-                element.style.zIndex = 9999;
-            });
-        }
-
-        // 定时弹窗
-        function autoPopTips() {
-            createWarmTip();
-            if (windowCount < MAX_WINDOWS) {
-                setTimeout(autoPopTips, interval);
-            }
-        }
-
-        window.addEventListener('load', autoPopTips);
-    </script>
+<canvas id="mycanvas" width="800" height="600"></canvas>
 </body>
+<script type="text/javascript">
+    var g=new Game("mycanvas","R.txt");
+</script>
 </html>
